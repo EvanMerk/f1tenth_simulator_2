@@ -113,8 +113,8 @@ void ScanSimulator2D::set_map(
   width = width_;
   resolution = resolution_;
   origin = origin_;
-  origin_c = std::cos(origin.theta);
-  origin_s = std::sin(origin.theta);
+  origin_c = std::cos(originode->theta);
+  origin_s = std::sin(originode->theta);
 
   // Threshold the map
   dt = std::vector<double>(map.size());
@@ -141,8 +141,8 @@ void ScanSimulator2D::set_map(const std::vector<double> & map, double free_thres
 
 void ScanSimulator2D::xy_to_row_col(double x, double y, int * row, int * col) const {
   // Translate the state by the origin
-  double x_trans = x - origin.x;
-  double y_trans = y - origin.y;
+  double x_trans = x - originode->x;
+  double y_trans = y - originode->y;
 
   // Rotate the state into the map
   double x_rot =   x_trans * origin_c + y_trans * origin_s;

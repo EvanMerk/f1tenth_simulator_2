@@ -1,10 +1,10 @@
-# THIS REPO IS NO LONGER MAINTAINED
-## If you need a F1TENTH simulation in ROS, we have moved to a containerized ROS 2 simulation here: [https://github.com/f1tenth/f1tenth_gym_ros](https://github.com/f1tenth/f1tenth_gym_ros)
+# THIS REPO IS EXPERIMENTAL
+## If you need a F1TENTH simulation in ROS2, The containerized ROS 2 simulator is here: [https://github.com/f1tenth/f1tenth_gym_ros](https://github.com/f1tenth/f1tenth_gym_ros)
 
 # F1TENTH Racecar Simulator
 
-This is a lightweight 2D simulator of the UPenn F1TENTH Racecar.
-It can be built with ROS, or it can be used as a standalone C++ library.
+This is a lightweight 2D simulator of the UPenn F1TENTH Racecar ported directly to ROS2.
+It can be built with ROS2, or it can be used as a standalone C++ library.
 
 https://f1tenth.readthedocs.io/en/latest/going_forward/simulator/index.html
 
@@ -12,16 +12,16 @@ https://f1tenth.readthedocs.io/en/latest/going_forward/simulator/index.html
 
 ### Dependencies
 
-If you have ```ros-melodic-desktop``` installed, the additional dependencies you must install are:
+If you have ```ros-humble-desktop``` installed, the additional dependencies you must install are:
 
 - tf2_geometry_msgs
 - ackermann_msgs
 - joy
-- map_server
+- nav2_map_server
 
 You can install them by running:
 
-    sudo apt-get install ros-melodic-tf2-geometry-msgs ros-melodic-ackermann-msgs ros-melodic-joy ros-melodic-map-server
+    sudo apt-get install ros-humble-tf2-geometry-msgs ros-humble-ackermann-msgs ros-humble-joy ros-humble-nav2-map-msgs
 
 The full list of dependencies can be found in the ```package.xml``` file.
 
@@ -29,7 +29,7 @@ The full list of dependencies can be found in the ```package.xml``` file.
 
 To install the simulator package, clone the repo with the simulator and starter code into your catkin workspace:
 
-    cd ~/catkin_ws/src
+    cd ~/colcon_ws/src
     git clone https://github.com/f1tenth/f1tenth_simulator.git
     
 Then run ```catkin_make``` to build it:

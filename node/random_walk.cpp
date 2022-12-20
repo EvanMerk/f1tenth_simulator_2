@@ -39,18 +39,18 @@ public:
 
         // get topic names
         std::string drive_topic, odom_topic;
-        n.getParam("rand_drive_topic", drive_topic);
-        n.getParam("odom_topic", odom_topic);
+        node->get_parameter("rand_drive_topic", drive_topic);
+        node->get_parameter("odom_topic", odom_topic);
 
         // get car parameters
-        n.getParam("max_speed", max_speed);
-        n.getParam("max_steering_angle", max_steering_angle);
+        node->get_parameter("max_speed", max_speed);
+        node->get_parameter("max_steering_angle", max_steering_angle);
 
         // Make a publisher for drive messages
-        drive_pub = n.advertise<ackermann_msgs::AckermannDriveStamped>(drive_topic, 10);
+        drive_pub = node->advertise<ackermann_msgs::AckermannDriveStamped>(drive_topic, 10);
 
         // Start a subscriber to listen to odom messages
-        odom_sub = n.subscribe(odom_topic, 1, &RandomWalker::odom_callback, this);
+        odom_sub = node->subscribe(odom_topic, 1, &RandomWalker::odom_callback, this);
 
 
     }

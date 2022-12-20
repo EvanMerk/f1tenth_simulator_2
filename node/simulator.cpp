@@ -4,7 +4,7 @@
 #include <interactive_markers/interactive_marker_server.h>
 
 #include <tf2/impl/utils.h>
-#include <tf2/LinearMath/Quaternion.h>
+#include <tf2/LinearMath/Quaternionode->h>
 #include <tf2_ros/transform_broadcaster.h>
 #include <ackermann_msgs/AckermannDriveStamped.h>
 #include <nav_msgs/OccupancyGrid.h>
@@ -12,7 +12,7 @@
 #include <sensor_msgs/Imu.h>
 #include <std_msgs/Int32MultiArray.h>
 
-#include <sensor_msgs/LaserScan.h>
+#include <sensor_msgs/LaserScanode->h>
 #include <geometry_msgs/PoseWithCovarianceStamped.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/PointStamped.h>
@@ -144,57 +144,57 @@ public:
         // Get the topic names
         std::string drive_topic, map_topic, scan_topic, pose_topic, gt_pose_topic, 
         pose_rviz_topic, odom_topic, imu_topic;
-        n.getParam("drive_topic", drive_topic);
-        n.getParam("map_topic", map_topic);
-        n.getParam("scan_topic", scan_topic);
-        n.getParam("pose_topic", pose_topic);
-        n.getParam("odom_topic", odom_topic);
-        n.getParam("pose_rviz_topic", pose_rviz_topic);
-        n.getParam("imu_topic", imu_topic);
-        n.getParam("ground_truth_pose_topic", gt_pose_topic);
+        node->get_parameter("drive_topic", drive_topic);
+        node->get_parameter("map_topic", map_topic);
+        node->get_parameter("scan_topic", scan_topic);
+        node->get_parameter("pose_topic", pose_topic);
+        node->get_parameter("odom_topic", odom_topic);
+        node->get_parameter("pose_rviz_topic", pose_rviz_topic);
+        node->get_parameter("imu_topic", imu_topic);
+        node->get_parameter("ground_truth_pose_topic", gt_pose_topic);
 
         // Get steering delay params
-        n.getParam("buffer_length", buffer_length);
+        node->get_parameter("buffer_length", buffer_length);
 
         // Get the transformation frame names
-        n.getParam("map_frame", map_frame);
-        n.getParam("base_frame", base_frame);
-        n.getParam("scan_frame", scan_frame);
+        node->get_parameter("map_frame", map_frame);
+        node->get_parameter("base_frame", base_frame);
+        node->get_parameter("scan_frame", scan_frame);
 
         // Fetch the car parameters
         int scan_beams;
         double update_pose_rate, scan_std_dev;
-        n.getParam("wheelbase", params.wheelbase);
-        n.getParam("update_pose_rate", update_pose_rate);
-        n.getParam("scan_beams", scan_beams);
-        n.getParam("scan_field_of_view", scan_fov);
-        n.getParam("scan_std_dev", scan_std_dev);
-        n.getParam("map_free_threshold", map_free_threshold);
-        n.getParam("scan_distance_to_base_link", scan_distance_to_base_link);
-        n.getParam("max_speed", max_speed);
-        n.getParam("max_steering_angle", max_steering_angle);
-        n.getParam("max_accel", max_accel);
-        n.getParam("max_decel", max_decel);
-        n.getParam("max_steering_vel", max_steering_vel);
-        n.getParam("friction_coeff", params.friction_coeff);
-        n.getParam("height_cg", params.h_cg);
-        n.getParam("l_cg2rear", params.l_r);
-        n.getParam("l_cg2front", params.l_f);
-        n.getParam("C_S_front", params.cs_f);
-        n.getParam("C_S_rear", params.cs_r);
-        n.getParam("moment_inertia", params.I_z);
-        n.getParam("mass", params.mass);
-        n.getParam("width", width);
+        node->get_parameter("wheelbase", params.wheelbase);
+        node->get_parameter("update_pose_rate", update_pose_rate);
+        node->get_parameter("scan_beams", scan_beams);
+        node->get_parameter("scan_field_of_view", scan_fov);
+        node->get_parameter("scan_std_dev", scan_std_dev);
+        node->get_parameter("map_free_threshold", map_free_threshold);
+        node->get_parameter("scan_distance_to_base_link", scan_distance_to_base_link);
+        node->get_parameter("max_speed", max_speed);
+        node->get_parameter("max_steering_angle", max_steering_angle);
+        node->get_parameter("max_accel", max_accel);
+        node->get_parameter("max_decel", max_decel);
+        node->get_parameter("max_steering_vel", max_steering_vel);
+        node->get_parameter("friction_coeff", params.friction_coeff);
+        node->get_parameter("height_cg", params.h_cg);
+        node->get_parameter("l_cg2rear", params.l_r);
+        node->get_parameter("l_cg2front", params.l_f);
+        node->get_parameter("C_S_front", params.cs_f);
+        node->get_parameter("C_S_rear", params.cs_r);
+        node->get_parameter("moment_inertia", params.I_z);
+        node->get_parameter("mass", params.mass);
+        node->get_parameter("width", width);
 
         // clip velocity
-        n.getParam("speed_clip_diff", speed_clip_diff);
+        node->get_parameter("speed_clip_diff", speed_clip_diff);
 
         // Determine if we should broadcast
-        n.getParam("broadcast_transform", broadcast_transform);
-        n.getParam("publish_ground_truth_pose", pub_gt_pose);
+        node->get_parameter("broadcast_transform", broadcast_transform);
+        node->get_parameter("publish_ground_truth_pose", pub_gt_pose);
 
         // Get obstacle size parameter
-        n.getParam("obstacle_size", obstacle_size);
+        node->get_parameter("obstacle_size", obstacle_size);
 
         // Initialize a simulator of the laser scanner
         scan_simulator = ScanSimulator2D(
@@ -203,39 +203,39 @@ public:
             scan_std_dev);
 
         // Make a publisher for laser scan messages
-        scan_pub = n.advertise<sensor_msgs::LaserScan>(scan_topic, 1);
+        scan_pub = node->advertise<sensor_msgs::LaserScan>(scan_topic, 1);
 
         // Make a publisher for odometry messages
-        odom_pub = n.advertise<nav_msgs::Odometry>(odom_topic, 1);
+        odom_pub = node->advertise<nav_msgs::Odometry>(odom_topic, 1);
 
         // Make a publisher for IMU messages
-        imu_pub = n.advertise<sensor_msgs::Imu>(imu_topic, 1);
+        imu_pub = node->advertise<sensor_msgs::Imu>(imu_topic, 1);
 
         // Make a publisher for publishing map with obstacles
-        map_pub = n.advertise<nav_msgs::OccupancyGrid>("/map", 1);
+        map_pub = node->advertise<nav_msgs::OccupancyGrid>("/map", 1);
 
         // Make a publisher for ground truth pose
-        pose_pub = n.advertise<geometry_msgs::PoseStamped>(gt_pose_topic, 1);
+        pose_pub = node->advertise<geometry_msgs::PoseStamped>(gt_pose_topic, 1);
 
         // Start a timer to output the pose
-        update_pose_timer = n.createTimer(ros::Duration(update_pose_rate), &RacecarSimulator::update_pose, this);
+        update_pose_timer = node->createTimer(ros::Duration(update_pose_rate), &RacecarSimulator::update_pose, this);
 
         // Start a subscriber to listen to drive commands
-        drive_sub = n.subscribe(drive_topic, 1, &RacecarSimulator::drive_callback, this);
+        drive_sub = node->subscribe(drive_topic, 1, &RacecarSimulator::drive_callback, this);
 
         // Start a subscriber to listen to new maps
-        map_sub = n.subscribe(map_topic, 1, &RacecarSimulator::map_callback, this);
+        map_sub = node->subscribe(map_topic, 1, &RacecarSimulator::map_callback, this);
 
         // Start a subscriber to listen to pose messages
-        pose_sub = n.subscribe(pose_topic, 1, &RacecarSimulator::pose_callback, this);
-        pose_rviz_sub = n.subscribe(pose_rviz_topic, 1, &RacecarSimulator::pose_rviz_callback, this);
+        pose_sub = node->subscribe(pose_topic, 1, &RacecarSimulator::pose_callback, this);
+        pose_rviz_sub = node->subscribe(pose_rviz_topic, 1, &RacecarSimulator::pose_rviz_callback, this);
 
         // obstacle subscriber
-        obs_sub = n.subscribe("/clicked_point", 1, &RacecarSimulator::obs_callback, this);
+        obs_sub = node->subscribe("/clicked_point", 1, &RacecarSimulator::obs_callback, this);
 
         // get collision safety margin
-        n.getParam("coll_threshold", thresh);
-        n.getParam("ttc_threshold", ttc_threshold);
+        node->get_parameter("coll_threshold", thresh);
+        node->get_parameter("ttc_threshold", ttc_threshold);
 
         scan_ang_incr = scan_simulator.get_angle_increment();
 
@@ -262,30 +262,30 @@ public:
 
         map_width = map_msg.info.width;
         map_height = map_msg.info.height;
-        origin_x = map_msg.info.origin.position.x;
-        origin_y = map_msg.info.origin.position.y;
+        origin_x = map_msg.info.originode->positionode->x;
+        origin_y = map_msg.info.originode->positionode->y;
         map_resolution = map_msg.info.resolution;
 
         // create button for clearing obstacles
         visualization_msgs::InteractiveMarker clear_obs_button;
-        clear_obs_button.header.frame_id = "map";
-        // clear_obs_button.pose.position.x = origin_x+(1/3)*map_width*map_resolution;
-        // clear_obs_button.pose.position.y = origin_y+(1/3)*map_height*map_resolution;
+        clear_obs_buttonode->header.frame_id = "map";
+        // clear_obs_buttonode->pose.positionode->x = origin_x+(1/3)*map_width*map_resolution;
+        // clear_obs_buttonode->pose.positionode->y = origin_y+(1/3)*map_height*map_resolution;
         // TODO: find better positioning of buttons
-        clear_obs_button.pose.position.x = 0;
-        clear_obs_button.pose.position.y = -5;
-        clear_obs_button.scale = 1;
-        clear_obs_button.name = "clear_obstacles";
-        clear_obs_button.description = "Clear Obstacles\n(Left Click)";
+        clear_obs_buttonode->pose.positionode->x = 0;
+        clear_obs_buttonode->pose.positionode->y = -5;
+        clear_obs_buttonode->scale = 1;
+        clear_obs_buttonode->name = "clear_obstacles";
+        clear_obs_buttonode->description = "Clear Obstacles\n(Left Click)";
         visualization_msgs::InteractiveMarkerControl clear_obs_control;
         clear_obs_control.interaction_mode = visualization_msgs::InteractiveMarkerControl::BUTTON;
         clear_obs_control.name = "clear_obstacles_control";
         // make a box for the button
         visualization_msgs::Marker clear_obs_marker;
         clear_obs_marker.type = visualization_msgs::Marker::CUBE;
-        clear_obs_marker.scale.x = clear_obs_button.scale*0.45;
-        clear_obs_marker.scale.y = clear_obs_button.scale*0.65;
-        clear_obs_marker.scale.z = clear_obs_button.scale*0.45;
+        clear_obs_marker.scale.x = clear_obs_buttonode->scale*0.45;
+        clear_obs_marker.scale.y = clear_obs_buttonode->scale*0.65;
+        clear_obs_marker.scale.z = clear_obs_buttonode->scale*0.45;
         clear_obs_marker.color.r = 0.0;
         clear_obs_marker.color.g = 1.0;
         clear_obs_marker.color.b = 0.0;
@@ -293,10 +293,10 @@ public:
 
         clear_obs_control.markers.push_back(clear_obs_marker);
         clear_obs_control.always_visible = true;
-        clear_obs_button.controls.push_back(clear_obs_control);
+        clear_obs_buttonode->controls.push_back(clear_obs_control);
 
         im_server.insert(clear_obs_button);
-        im_server.setCallback(clear_obs_button.name, boost::bind(&RacecarSimulator::clear_obstacles, this, _1));
+        im_server.setCallback(clear_obs_buttonode->name, boost::bind(&RacecarSimulator::clear_obstacles, this, _1));
 
         im_server.applyChanges();
 
@@ -359,8 +359,8 @@ public:
             std::vector<double> scan = scan_simulator.scan(scan_pose);
 
             // Convert to float
-            std::vector<float> scan_(scan.size());
-            for (size_t i = 0; i < scan.size(); i++)
+            std::vector<float> scan_(scanode->size());
+            for (size_t i = 0; i < scanode->size(); i++)
                 scan_[i] = scan[i];
 
             // TTC Calculations are done here so the car can be halted in the simulator:
@@ -540,8 +540,8 @@ public:
     }
 
     void pose_callback(const geometry_msgs::PoseStamped & msg) {
-        state.x = msg.pose.position.x;
-        state.y = msg.pose.position.y;
+        state.x = msg.pose.positionode->x;
+        state.y = msg.pose.positionode->y;
         geometry_msgs::Quaternion q = msg.pose.orientation;
         tf2::Quaternion quat(q.x, q.y, q.z, q.w);
         state.theta = tf2::impl::getYaw(quat);
@@ -581,11 +581,11 @@ public:
             double resolution = msg.info.resolution;
             // Convert the ROS origin to a pose
             Pose2D origin;
-            origin.x = msg.info.origin.position.x;
-            origin.y = msg.info.origin.position.y;
-            geometry_msgs::Quaternion q = msg.info.origin.orientation;
+            originode->x = msg.info.originode->positionode->x;
+            originode->y = msg.info.originode->positionode->y;
+            geometry_msgs::Quaternion q = msg.info.originode->orientation;
             tf2::Quaternion quat(q.x, q.y, q.z, q.w);
-            origin.theta = tf2::impl::getYaw(quat);
+            originode->theta = tf2::impl::getYaw(quat);
 
             // Convert the map to probability values
             std::vector<double> map(msg.data.size());
@@ -613,24 +613,24 @@ public:
         void pub_pose_transform(ros::Time timestamp) {
             // Convert the pose into a transformation
             geometry_msgs::Transform t;
-            t.translation.x = state.x;
-            t.translation.y = state.y;
+            t.translationode->x = state.x;
+            t.translationode->y = state.y;
             tf2::Quaternion quat;
             quat.setEuler(0., 0., state.theta);
-            t.rotation.x = quat.x();
-            t.rotation.y = quat.y();
-            t.rotation.z = quat.z();
-            t.rotation.w = quat.w();
+            t.rotationode->x = quat.x();
+            t.rotationode->y = quat.y();
+            t.rotationode->z = quat.z();
+            t.rotationode->w = quat.w();
 
             // publish ground truth pose
             geometry_msgs::PoseStamped ps;
             ps.header.frame_id = "/map";
-            ps.pose.position.x = state.x;
-            ps.pose.position.y = state.y;
-            ps.pose.orientation.x = quat.x();
-            ps.pose.orientation.y = quat.y();
-            ps.pose.orientation.z = quat.z();
-            ps.pose.orientation.w = quat.w();
+            ps.pose.positionode->x = state.x;
+            ps.pose.positionode->y = state.y;
+            ps.pose.orientationode->x = quat.x();
+            ps.pose.orientationode->y = quat.y();
+            ps.pose.orientationode->z = quat.z();
+            ps.pose.orientationode->w = quat.w();
 
             // Add a header to the transformation
             geometry_msgs::TransformStamped ts;
@@ -654,10 +654,10 @@ public:
             tf2::Quaternion quat_wheel;
             quat_wheel.setEuler(0., 0., state.steer_angle);
             geometry_msgs::TransformStamped ts_wheel;
-            ts_wheel.transform.rotation.x = quat_wheel.x();
-            ts_wheel.transform.rotation.y = quat_wheel.y();
-            ts_wheel.transform.rotation.z = quat_wheel.z();
-            ts_wheel.transform.rotation.w = quat_wheel.w();
+            ts_wheel.transform.rotationode->x = quat_wheel.x();
+            ts_wheel.transform.rotationode->y = quat_wheel.y();
+            ts_wheel.transform.rotationode->z = quat_wheel.z();
+            ts_wheel.transform.rotationode->w = quat_wheel.w();
             ts_wheel.header.stamp = timestamp;
             ts_wheel.header.frame_id = "front_left_hinge";
             ts_wheel.child_frame_id = "front_left_wheel";
@@ -670,8 +670,8 @@ public:
         void pub_laser_link_transform(ros::Time timestamp) {
             // Publish a transformation between base link and laser
             geometry_msgs::TransformStamped scan_ts;
-            scan_ts.transform.translation.x = scan_distance_to_base_link;
-            scan_ts.transform.rotation.w = 1;
+            scan_ts.transform.translationode->x = scan_distance_to_base_link;
+            scan_ts.transform.rotationode->w = 1;
             scan_ts.header.stamp = timestamp;
             scan_ts.header.frame_id = base_frame;
             scan_ts.child_frame_id = scan_frame;
@@ -684,14 +684,14 @@ public:
             odom.header.stamp = timestamp;
             odom.header.frame_id = map_frame;
             odom.child_frame_id = base_frame;
-            odom.pose.pose.position.x = state.x;
-            odom.pose.pose.position.y = state.y;
+            odom.pose.pose.positionode->x = state.x;
+            odom.pose.pose.positionode->y = state.y;
             tf2::Quaternion quat;
             quat.setEuler(0., 0., state.theta);
-            odom.pose.pose.orientation.x = quat.x();
-            odom.pose.pose.orientation.y = quat.y();
-            odom.pose.pose.orientation.z = quat.z();
-            odom.pose.pose.orientation.w = quat.w();
+            odom.pose.pose.orientationode->x = quat.x();
+            odom.pose.pose.orientationode->y = quat.y();
+            odom.pose.pose.orientationode->z = quat.z();
+            odom.pose.pose.orientationode->w = quat.w();
             odom.twist.twist.linear.x = state.velocity;
             odom.twist.twist.angular.z = state.angular_velocity;
             odom_pub.publish(odom);

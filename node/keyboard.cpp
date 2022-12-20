@@ -1,6 +1,6 @@
-#include <ros/ros.h>
+#include <rclcpp/rclcpp.hpp>
 
-#include <std_msgs/String.h>
+#include <std_msgs/msg/String.hpp>
 
 #include <termios.h>
 
@@ -18,15 +18,15 @@ void sigHandler(int not_used) {
 }
 
 int main(int argc, char ** argv) {
-    ros::init(argc, argv, "keyboard");
+    rclcpp::init(argc, argv, "keyboard");
     // Initialize Node Handle
-    ros::NodeHandle n = ros::NodeHandle("~");
+    auto node = rclcpp::Node::make_shared("keyboard")
 
     // Initialze publisher
     std::string keyboard_topic;
-    n.getParam("keyboard_topic", keyboard_topic);
+    node->get_parameter("keyboard_topic", keyboard_topic);
 
-    ros::Publisher key_pub = n.advertise<std_msgs::String>(keyboard_topic, 10);
+    rclcpp::Publisher key_pub = node->advertise<std_msgs::msg::String>(keyboard_topic, 10);
 
 
     static struct termios oldt, newt;
@@ -40,9 +40,9 @@ int main(int argc, char ** argv) {
     sigaction(SIGINT, &act, NULL);
     
 
-    std_msgs::String msg;
+    std_msgs::msg::String msg;
     int c;
-    while ((ros::ok()) && (keep_running)) {
+    while ((rclcpp::ok()) && (keep_running)) {
         // get the character pressed
         c = getchar();
 

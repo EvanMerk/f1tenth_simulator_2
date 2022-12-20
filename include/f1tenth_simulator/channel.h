@@ -1,19 +1,19 @@
 #ifndef CHANNEL_H
 #define CHANNEL_H
 
-#include <ros/ros.h>
+#include <rclcpp/rclcpp.hpp>
 
-#include <ackermann_msgs/AckermannDriveStamped.h>
+#include <ackermann_msgs/msg/AckermannDriveStamped.hpp>
 
 class Mux;
 
 class Channel {
 private:
     // Publish drive data to simulator/car
-    ros::Publisher drive_pub;
+    rclcpp::Publisher drive_pub;
 
     // Listen to drive data from a specific topic
-    ros::Subscriber channel_sub;
+    rclcpp::Subscriber channel_sub;
 
     // Mux index for this channel
     int mux_idx;
